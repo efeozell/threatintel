@@ -1,0 +1,719 @@
+:root {
+    --bg-0: #06080d;
+    --bg-1: #0b0f17;
+    --panel: #10151f;
+    --panel-2: #141a26;
+    --border: #1f2733;
+    --text: #e6edf3;
+    --muted: #7d8a9c;
+    --accent: #22d3a8;
+    --accent-2: #58a6ff;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #2a3441 transparent;
+}
+
+body {
+    background:
+        radial-gradient(circle at 15% 0%, rgba(34, 211, 168, 0.06), transparent 40%),
+        radial-gradient(circle at 85% 20%, rgba(88, 166, 255, 0.06), transparent 45%),
+        var(--bg-0);
+    color: var(--text);
+    min-height: 100vh;
+    font-family: "Space Grotesk", "Segoe UI", sans-serif;
+}
+
+/* ---------- Navbar ---------- */
+.top-navbar {
+    background: linear-gradient(180deg, #0c1017 0%, #0a0d13 100%) !important;
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.02), 0 8px 24px rgba(0, 0, 0, 0.35);
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
+}
+
+.brand-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.03em;
+    color: #06080d;
+    background: linear-gradient(135deg, var(--accent), #7ef7d4);
+    padding: 5px 12px;
+    border-radius: 999px;
+    box-shadow: 0 0 16px rgba(34, 211, 168, 0.35);
+}
+
+.navbar-brand {
+    font-family: "Space Grotesk", sans-serif;
+    letter-spacing: 0.01em;
+    color: var(--text) !important;
+}
+
+.live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    display: inline-block;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+}
+
+/* ---------- Cards ---------- */
+.card {
+    background-color: var(--panel) !important;
+    border-color: var(--border) !important;
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(6px);
+}
+
+.search-card {
+    border: 1px solid var(--border) !important;
+    background: linear-gradient(180deg, #121826 0%, #0e131c 100%) !important;
+}
+
+.card-header {
+    border-radius: 14px 14px 0 0 !important;
+    font-family: "Space Grotesk", sans-serif;
+    letter-spacing: 0.02em;
+}
+
+.card-title i {
+    color: var(--accent);
+}
+
+/* ---------- Search input ---------- */
+.search-icon-addon {
+    background-color: #1b2330 !important;
+    border: none !important;
+    color: var(--muted) !important;
+}
+
+.form-control {
+    background-color: #1b2330 !important;
+    border: 1px solid var(--border) !important;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.92rem;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 3px rgba(34, 211, 168, 0.15) !important;
+    border-color: var(--accent) !important;
+}
+
+.form-control::placeholder {
+    color: var(--muted);
+}
+
+#analyzeBtn {
+    background: linear-gradient(135deg, var(--accent), #17b891) !important;
+    border: none !important;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    box-shadow: 0 4px 14px rgba(34, 211, 168, 0.25);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+#analyzeBtn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(34, 211, 168, 0.35);
+}
+
+.example-link {
+    color: var(--accent-2);
+    cursor: pointer;
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(88, 166, 255, 0.4);
+    transition: color 0.15s ease;
+}
+
+.example-link:hover {
+    color: #9ecbff;
+    border-bottom-color: #9ecbff;
+}
+
+/* ---------- Score renkleri ---------- */
+.score-clean {
+    color: #3fb950;
+    border-color: #3fb950 !important;
+}
+
+.score-suspicious {
+    color: #d29922;
+    border-color: #d29922 !important;
+}
+
+.score-high-risk {
+    color: #e3702a;
+    border-color: #e3702a !important;
+}
+
+.score-dangerous {
+    color: #f85149;
+    border-color: #f85149 !important;
+}
+
+#scoreCard {
+    border: 1px solid var(--border) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+#scoreCard::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, currentColor 0%, transparent 65%);
+    opacity: 0.06;
+    pointer-events: none;
+}
+
+#scoreValue {
+    font-family: "JetBrains Mono", monospace;
+    text-shadow: 0 0 24px currentColor;
+    letter-spacing: -0.02em;
+}
+
+/* ---------- Progress bar renkleri ---------- */
+.progress {
+    background-color: #171d29 !important;
+    overflow: hidden;
+}
+
+.progress-bar {
+    transition: width 0.6s ease;
+}
+
+.bar-clean {
+    background: linear-gradient(90deg, #2a9d4f, #3fb950);
+}
+
+.bar-suspicious {
+    background: linear-gradient(90deg, #a97a1c, #d29922);
+}
+
+.bar-high-risk {
+    background: linear-gradient(90deg, #b85622, #e3702a);
+}
+
+.bar-dangerous {
+    background: linear-gradient(90deg, #c23a33, #f85149);
+}
+
+/* ---------- Info rows ---------- */
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 2px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.875rem;
+    font-family: "JetBrains Mono", monospace;
+    color: var(--text);
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    color: var(--muted);
+    font-family: "Space Grotesk", sans-serif;
+}
+
+.finding-item {
+    padding: 8px 2px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.875rem;
+    color: var(--text);
+}
+
+.finding-item:last-child {
+    border-bottom: none;
+}
+
+.finding-item::before {
+    content: none;
+}
+
+/* ---------- Misc ---------- */
+.alert-danger {
+    background-color: rgba(248, 81, 73, 0.1);
+    border-color: rgba(248, 81, 73, 0.4);
+    color: #ff9a94;
+    border-radius: 12px;
+}
+
+.spinner-border.text-success {
+    color: var(--accent) !important;
+}
+
+/* ---------- VirusTotal Modal ---------- */
+.vt-modal {
+    background: linear-gradient(180deg, #121826 0%, #0d1119 100%) !important;
+    border: 1px solid rgba(63, 185, 80, 0.35) !important;
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(63, 185, 80, 0.08);
+    overflow: hidden;
+}
+
+.modal-backdrop.show {
+    opacity: 0.7;
+    backdrop-filter: blur(2px);
+}
+
+.vt-modal .modal-header {
+    border-bottom: 1px solid rgba(63, 185, 80, 0.25) !important;
+    background: rgba(63, 185, 80, 0.06);
+}
+
+.vt-modal .modal-title {
+    font-family: "Space Grotesk", sans-serif;
+    letter-spacing: 0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.vt-modal .modal-body {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.875rem;
+}
+
+#vtTabs {
+    border-bottom: 1px solid var(--border) !important;
+    gap: 4px;
+}
+
+#vtTabs .nav-link {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 500;
+    border: 1px solid transparent;
+    border-radius: 8px 8px 0 0;
+    color: var(--muted) !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+#vtTabs .nav-link:hover {
+    color: #7ef7d4 !important;
+    background: rgba(63, 185, 80, 0.08);
+}
+
+#vtTabs .nav-link.active {
+    color: #3fb950 !important;
+    background: rgba(63, 185, 80, 0.12);
+    border-color: rgba(63, 185, 80, 0.3) rgba(63, 185, 80, 0.3) transparent;
+}
+
+#detectionsContent,
+#relationsContent {
+    font-family: "JetBrains Mono", monospace;
+}
+
+/* ---------- VT details trigger button ---------- */
+.vt-details-btn {
+    background: rgba(63, 185, 80, 0.12);
+    border: 1px solid rgba(63, 185, 80, 0.35);
+    color: #3fb950;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 7px;
+    font-size: 0.8rem;
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.vt-details-btn:hover {
+    background: rgba(63, 185, 80, 0.22);
+    color: #7ef7d4;
+    transform: scale(1.05);
+}
+
+/* ---------- VT badges ---------- */
+.vt-badge-mal {
+    background: rgba(248, 81, 73, 0.18);
+    color: #ff8a82;
+    border: 1px solid rgba(248, 81, 73, 0.4);
+    font-weight: 600;
+    font-family: "JetBrains Mono", monospace;
+}
+
+.vt-badge-sus {
+    background: rgba(210, 153, 34, 0.18);
+    color: #e8b23d;
+    border: 1px solid rgba(210, 153, 34, 0.4);
+    font-weight: 600;
+    font-family: "JetBrains Mono", monospace;
+}
+
+.vt-alert-clean {
+    background: rgba(63, 185, 80, 0.1);
+    border: 1px solid rgba(63, 185, 80, 0.35);
+    color: #7ef7d4;
+    border-radius: 10px;
+}
+
+/* ---------- VT tables ---------- */
+.vt-table-wrap {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.vt-table {
+    margin-bottom: 0;
+    background-color: var(--panel-2) !important;
+}
+
+.vt-table thead th {
+    background-color: #1b2330 !important;
+    color: var(--muted);
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--border) !important;
+}
+
+.vt-table td, .vt-table th {
+    border-color: var(--border) !important;
+    vertical-align: middle;
+}
+
+.vt-table tbody tr {
+    background-color: transparent !important;
+}
+
+.vt-table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+}
+
+/* ---------- AbuseIPDB Modal ---------- */
+.abuse-modal {
+    background: linear-gradient(180deg, #121826 0%, #0d1119 100%) !important;
+    border: 1px solid rgba(88, 166, 255, 0.35) !important;
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(88, 166, 255, 0.08);
+    overflow: hidden;
+}
+
+.abuse-modal .modal-header {
+    border-bottom: 1px solid rgba(88, 166, 255, 0.25) !important;
+    background: rgba(88, 166, 255, 0.06);
+}
+
+.abuse-modal .modal-title {
+    font-family: "Space Grotesk", sans-serif;
+    letter-spacing: 0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.abuse-modal .modal-body {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.875rem;
+}
+
+#abuseTabs {
+    border-bottom: 1px solid var(--border) !important;
+    gap: 4px;
+}
+
+#abuseTabs .nav-link {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 500;
+    border: 1px solid transparent;
+    border-radius: 8px 8px 0 0;
+    color: var(--muted) !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+#abuseTabs .nav-link:hover {
+    color: #9ecbff !important;
+    background: rgba(88, 166, 255, 0.08);
+}
+
+#abuseTabs .nav-link.active {
+    color: var(--accent-2) !important;
+    background: rgba(88, 166, 255, 0.12);
+    border-color: rgba(88, 166, 255, 0.3) rgba(88, 166, 255, 0.3) transparent;
+}
+
+#reportsContent,
+#categoriesContent {
+    font-family: "JetBrains Mono", monospace;
+}
+
+/* ---------- Abuse details trigger button ---------- */
+.abuse-details-btn {
+    background: rgba(88, 166, 255, 0.12);
+    border: 1px solid rgba(88, 166, 255, 0.35);
+    color: var(--accent-2);
+    padding: 3px 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 7px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.abuse-details-btn:hover {
+    background: rgba(88, 166, 255, 0.22);
+    color: #9ecbff;
+    transform: scale(1.03);
+}
+
+/* ---------- Abuse badges ---------- */
+.abuse-badge-cat {
+    background: rgba(88, 166, 255, 0.18);
+    color: #9ecbff;
+    border: 1px solid rgba(88, 166, 255, 0.4);
+    font-weight: 600;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+}
+
+.abuse-alert-clean {
+    background: rgba(63, 185, 80, 0.1);
+    border: 1px solid rgba(63, 185, 80, 0.35);
+    color: #7ef7d4;
+    border-radius: 10px;
+}
+
+/* ---------- Abuse tables ---------- */
+.abuse-table-wrap {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.abuse-table {
+    margin-bottom: 0;
+    background-color: var(--panel-2) !important;
+}
+
+.abuse-table thead th {
+    background-color: #1b2330 !important;
+    color: var(--muted);
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--border) !important;
+}
+
+.abuse-table td, .abuse-table th {
+    border-color: var(--border) !important;
+    vertical-align: middle;
+}
+
+.abuse-table tbody tr {
+    background-color: transparent !important;
+}
+
+.abuse-table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+}
+
+/* ---------- Abuse category bars ---------- */
+.abuse-progress {
+    background-color: #171d29 !important;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.abuse-bar {
+    background: linear-gradient(90deg, #2a6bb8, var(--accent-2));
+    transition: width 0.6s ease;
+}
+
+/* ---------- Shodan Modal ---------- */
+.shodan-modal {
+    background: linear-gradient(180deg, #121826 0%, #0d1119 100%) !important;
+    border: 1px solid rgba(210, 153, 34, 0.35) !important;
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(210, 153, 34, 0.08);
+    overflow: hidden;
+}
+
+.shodan-modal .modal-header {
+    border-bottom: 1px solid rgba(210, 153, 34, 0.25) !important;
+    background: rgba(210, 153, 34, 0.06);
+}
+
+.shodan-modal .modal-title {
+    font-family: "Space Grotesk", sans-serif;
+    letter-spacing: 0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.shodan-modal .modal-body {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.875rem;
+}
+
+#shodanTabs {
+    border-bottom: 1px solid var(--border) !important;
+    gap: 4px;
+}
+
+#shodanTabs .nav-link {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 500;
+    border: 1px solid transparent;
+    border-radius: 8px 8px 0 0;
+    color: var(--muted) !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+#shodanTabs .nav-link:hover {
+    color: #f2c14e !important;
+    background: rgba(210, 153, 34, 0.08);
+}
+
+#shodanTabs .nav-link.active {
+    color: #d29922 !important;
+    background: rgba(210, 153, 34, 0.12);
+    border-color: rgba(210, 153, 34, 0.3) rgba(210, 153, 34, 0.3) transparent;
+}
+
+#servicesContent,
+#vulnsContent {
+    font-family: "JetBrains Mono", monospace;
+}
+
+/* ---------- Shodan details trigger button ---------- */
+.shodan-details-btn {
+    background: rgba(210, 153, 34, 0.12);
+    border: 1px solid rgba(210, 153, 34, 0.35);
+    color: #d29922;
+    padding: 3px 10px;
+    align-items: center;
+    gap: 5px;
+    border-radius: 7px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.shodan-details-btn:hover {
+    background: rgba(210, 153, 34, 0.22);
+    color: #f2c14e;
+    transform: scale(1.03);
+}
+
+/* ---------- Shodan tables ---------- */
+.shodan-table-wrap {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.shodan-table {
+    margin-bottom: 0;
+    background-color: var(--panel-2) !important;
+}
+
+.shodan-table thead th {
+    background-color: #1b2330 !important;
+    color: var(--muted);
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--border) !important;
+}
+
+.shodan-table td, .shodan-table th {
+    border-color: var(--border) !important;
+    vertical-align: middle;
+}
+
+.shodan-table tbody tr {
+    background-color: transparent !important;
+}
+
+.shodan-table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+}
+
+.shodan-port-critical {
+    color: #f85149;
+    font-weight: 700;
+}
+
+.shodan-port-normal {
+    color: #d29922;
+    font-weight: 600;
+}
+
+/* ---------- Shodan vulnerabilities ---------- */
+.shodan-alert-clean {
+    background: rgba(63, 185, 80, 0.1);
+    border: 1px solid rgba(63, 185, 80, 0.35);
+    color: #7ef7d4;
+    border-radius: 10px;
+}
+
+.shodan-alert-danger {
+    background: rgba(248, 81, 73, 0.12);
+    border: 1px solid rgba(248, 81, 73, 0.4);
+    color: #ff9a94;
+    border-radius: 10px;
+}
+
+.shodan-vuln-item {
+    background-color: var(--panel-2) !important;
+    border: 1px solid rgba(248, 81, 73, 0.3) !important;
+    border-radius: 10px;
+}
+
+.shodan-vuln-cve {
+    color: #ff8a82;
+    font-weight: 700;
+    font-family: "JetBrains Mono", monospace;
+}
+
+.shodan-nvd-link {
+    background: rgba(248, 81, 73, 0.12);
+    border: 1px solid rgba(248, 81, 73, 0.4);
+    color: #ff9a94;
+    font-size: 0.75rem;
+    transition: background 0.15s ease;
+}
+
+.shodan-nvd-link:hover {
+    background: rgba(248, 81, 73, 0.22);
+    color: #ffb3ac;
+}

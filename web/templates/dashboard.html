@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Threat Intelligence Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="/static/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark px-4 top-navbar">
+        <div class="d-flex align-items-center gap-3">
+            <span class="brand-tag">
+                <i class="bi bi-hexagon-fill"></i> EfeOzel
+            </span>
+            <span class="navbar-brand fw-bold mb-0">
+                <i class="bi bi-shield-lock-fill text-success"></i>
+                Threat Intelligence Platform
+            </span>
+        </div>
+        <span class="text-muted small d-none d-md-inline-flex align-items-center gap-2">
+            <span class="live-dot"></span> SOC Analyst Tool v1.0
+        </span>
+    </nav>
+
+    <!-- Main -->
+    <div class="container-fluid py-4 px-4">
+
+        <!-- Search Bar -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-lg-8">
+                <div class="card bg-dark border-secondary search-card">
+                    <div class="card-body">
+                        <h5 class="card-title text-white mb-3">
+                            <i class="bi bi-search"></i> Analyze Target
+                        </h5>
+                        <div class="input-group">
+                            <span class="input-group-text search-icon-addon"><i class="bi bi-crosshair2"></i></span>
+                            <input type="text" id="targetInput" class="form-control bg-secondary text-white border-0"
+                                placeholder="Enter IP address, domain, or file hash..." autocomplete="off">
+                            <button class="btn btn-success px-4" id="analyzeBtn" onclick="analyze()">
+                                <i class="bi bi-search"></i> Analyze
+                            </button>
+                        </div>
+                        <div class="mt-2 text-muted small">
+                            Examples:
+                            <span class="example-link" onclick="setExample('1.1.1.1')">1.1.1.1</span> ·
+                            <span class="example-link" onclick="setExample('google.com')">google.com</span> ·
+                            <span class="example-link" onclick="setExample('44d88612fea8a8f36de82e1278abb02f')">EICAR
+                                hash</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div id="loadingSection" class="text-center py-5 d-none">
+            <div class="spinner-border text-success" role="status"></div>
+            <p class="text-muted mt-3">Querying VirusTotal, AbuseIPDB, Shodan...</p>
+        </div>
+
+        <!-- Error -->
+        <div id="errorSection" class="row justify-content-center d-none">
+            <div class="col-lg-8">
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <span id="errorMessage"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div id="resultsSection" class="d-none">
+
+            <!-- Threat Score -->
+            <div class="row justify-content-center mb-4">
+                <div class="col-lg-8">
+                    <div class="card border-0" id="scoreCard">
+                        <div class="card-body text-center py-4">
+                            <h6 class="text-muted text-uppercase mb-1">THREAT SCORE</h6>
+                            <div class="display-1 fw-bold" id="scoreValue">0</div>
+                            <div class="fs-4 fw-bold mt-1" id="threatLevel">—</div>
+                            <div class="text-muted mt-2" id="targetInfo">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Score Bar -->
+            <div class="row justify-content-center mb-4">
+                <div class="col-lg-8">
+                    <div class="progress" style="height: 10px; border-radius: 5px;">
+                        <div class="progress-bar" id="scoreBar" role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <div class="d-flex justify-content-between text-muted small mt-1">
+                        <span>🟢 Clean</span>
+                        <span>🟡 Suspicious</span>
+                        <span>🟠 High Risk</span>
+                        <span>🔴 Dangerous</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API Cards -->
+            <div class="row justify-content-center mb-4">
+                <div class="col-lg-8">
+                    <div class="row g-3">
+
+                        <!-- VirusTotal -->
+                        <div class="col-md-4">
+                            <div class="card bg-dark border-success h-100">
+                                <div class="card-header bg-success bg-opacity-25 border-success d-flex align-items-center justify-content-between">
+                                    <span>
+                                        <i class="bi bi-virus text-success"></i>
+                                        <span class="text-success fw-bold ms-1">VirusTotal</span>
+                                    </span>
+                                    <button type="button" class="btn btn-sm vt-details-btn" onclick="openVTDetails()" title="View full report">
+                                        <i class="bi bi-arrows-fullscreen"></i>
+                                    </button>
+                                </div>
+                                <div class="card-body" id="vtCard">
+                                    <p class="text-muted">—</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- AbuseIPDB -->
+                        <div class="col-md-4">
+                            <div class="card bg-dark border-primary h-100">
+                                <div class="card-header bg-primary bg-opacity-25 border-primary d-flex justify-content-between align-items-center">
+                                    <span>
+                                        <i class="bi bi-shield-x text-primary"></i>
+                                        <span class="text-primary fw-bold ms-1">AbuseIPDB</span>
+                                    </span>
+                                    <button
+                                        class="btn btn-sm abuse-details-btn"
+                                        onclick="openAbuseDetails()"
+                                        id="abuseDetailsBtn"
+                                    >
+                                        <i class="bi bi-zoom-in"></i> Details
+                                    </button>
+                                </div>
+                                <div class="card-body" id="abuseCard">
+                                    <p class="text-muted">—</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Shodan -->
+                        <div class="col-md-4">
+                            <div class="card bg-dark border-warning h-100">
+                                <div class="card-header bg-warning bg-opacity-25 border-warning d-flex justify-content-between align-items-center">
+                                    <span>
+                                        <i class="bi bi-hdd-network text-warning"></i>
+                                        <span class="text-warning fw-bold ms-1">Shodan</span>
+                                    </span>
+                                    <button
+                                        class="btn btn-sm shodan-details-btn"
+                                        onclick="openShodanDetails()"
+                                        id="shodanDetailsBtn"
+                                        style="display:none"
+                                    >
+                                        <i class="bi bi-zoom-in"></i> Details
+                                    </button>
+                                </div>
+                                <div class="card-body" id="shodanCard">
+                                    <p class="text-muted">—</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Findings -->
+            <div class="row justify-content-center mb-4">
+                <div class="col-lg-8">
+                    <div class="card bg-dark border-warning">
+                        <div class="card-header bg-warning bg-opacity-25 border-warning">
+                            <i class="bi bi-exclamation-triangle text-warning"></i>
+                            <span class="text-warning fw-bold ms-1">Key Findings</span>
+                        </div>
+                        <div class="card-body" id="findingsCard">
+                            <p class="text-muted">—</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- VirusTotal Detail Modal -->
+    <div class="modal fade" id="vtModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content bg-dark border-success vt-modal">
+                <div class="modal-header border-success">
+                    <h5 class="modal-title text-success">
+                        <i class="bi bi-virus"></i> VirusTotal Details
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+
+                    <!-- Tabs -->
+                    <ul class="nav nav-tabs border-secondary mb-3" id="vtTabs">
+                        <li class="nav-item">
+                            <button class="nav-link active text-success" data-bs-toggle="tab" data-bs-target="#detectionsTab">
+                                <i class="bi bi-shield-x"></i> Detections
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link text-success" data-bs-toggle="tab" data-bs-target="#relationsTab">
+                                <i class="bi bi-diagram-3"></i> Relations
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <!-- Detections Tab -->
+                        <div class="tab-pane fade show active" id="detectionsTab">
+                            <div id="detectionsContent">
+                                <div class="text-center text-muted py-3">
+                                    <div class="spinner-border spinner-border-sm"></div>
+                                    Loading...
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Relations Tab -->
+                        <div class="tab-pane fade" id="relationsTab">
+                            <div id="relationsContent">
+                                <div class="text-center text-muted py-3">
+                                    <div class="spinner-border spinner-border-sm"></div>
+                                    Loading...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AbuseIPDB Detail Modal -->
+    <div class="modal fade" id="abuseModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content bg-dark border-primary abuse-modal">
+                <div class="modal-header border-primary">
+                    <h5 class="modal-title text-primary">
+                        <i class="bi bi-shield-x"></i> AbuseIPDB Details
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+
+                    <!-- Tabs -->
+                    <ul class="nav nav-tabs border-secondary mb-3" id="abuseTabs">
+                        <li class="nav-item">
+                            <button class="nav-link active text-primary" data-bs-toggle="tab" data-bs-target="#reportsTab">
+                                <i class="bi bi-list-ul"></i> Recent Reports
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link text-primary" data-bs-toggle="tab" data-bs-target="#categoriesTab">
+                                <i class="bi bi-tags"></i> Categories
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <!-- Reports Tab -->
+                        <div class="tab-pane fade show active" id="reportsTab">
+                            <div id="reportsContent">
+                                <p class="text-muted">No data</p>
+                            </div>
+                        </div>
+
+                        <!-- Categories Tab -->
+                        <div class="tab-pane fade" id="categoriesTab">
+                            <div id="categoriesContent">
+                                <p class="text-muted">No data</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shodan Detail Modal -->
+    <div class="modal fade" id="shodanModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content bg-dark border-warning shodan-modal">
+                <div class="modal-header border-warning">
+                    <h5 class="modal-title text-warning">
+                        <i class="bi bi-hdd-network"></i> Shodan Details
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+
+                    <ul class="nav nav-tabs border-secondary mb-3" id="shodanTabs">
+                        <li class="nav-item">
+                            <button class="nav-link active text-warning" data-bs-toggle="tab" data-bs-target="#servicesTab">
+                                <i class="bi bi-hdd-stack"></i> Services
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link text-warning" data-bs-toggle="tab" data-bs-target="#vulnsTab">
+                                <i class="bi bi-bug"></i> Vulnerabilities
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="servicesTab">
+                            <div id="servicesContent">
+                                <p class="text-muted">No data</p>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="vulnsTab">
+                            <div id="vulnsContent">
+                                <p class="text-muted">No data</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/script.js"></script>
+</body>
+
+</html>
