@@ -252,9 +252,6 @@ This tool is intended for **defensive security purposes only** — threat huntin
 **Efe Özel**
 - SOC Analyst | Blue Team
 - GitHub: [@efeozell](https://github.com/efeozell)
+- Linkedin: [@efeozell](https://www.linkedin.com/in/efeozell/)
 
 ---
-
-## 📄 License
-
-MIT License — see [LICENSE](LICENSE) for details.
