@@ -89,7 +89,7 @@ python main.py --web
 
 ```bash
 # Query an IP address
-python main.py --ip 185.220.101.1
+python main.py --ip 185.220.xx.xx
 
 # Query a domain
 python main.py --domain malware.example.com
@@ -98,7 +98,7 @@ python main.py --domain malware.example.com
 python main.py --hash 44d88612fea8a8f36de82e1278abb02f
 
 # Save result to JSON report
-python main.py --ip 185.220.101.1 --save
+python main.py --ip 185.220.xx.xx --save
 
 # Show help
 python main.py --help
@@ -191,7 +191,7 @@ The tool calculates a weighted risk score (0–100) from all available sources:
 ```bash
 curl -X POST http://127.0.0.1:5000/api/analyze \
   -H "Content-Type: application/json" \
-  -d '{"target": "185.220.101.1"}'
+  -d '{"target": "185.220.xx.xx"}'
 ```
 
 ---
@@ -229,7 +229,7 @@ shodan==1.31.0
 
 | Type | Examples | Sources Used |
 |---|---|---|
-| IPv4 | `185.220.101.1` | VirusTotal, AbuseIPDB, Shodan |
+| IPv4 | `185.220.xx.xx` | VirusTotal, AbuseIPDB, Shodan |
 | IPv6 | `2001:db8::1` | VirusTotal, AbuseIPDB |
 | Domain | `malware.com` | VirusTotal only |
 | URL | `https://evil.com/path` | Auto-extracted → domain |
@@ -252,9 +252,6 @@ This tool is intended for **defensive security purposes only** — threat huntin
 **Efe Özel**
 - SOC Analyst | Blue Team
 - GitHub: [@efeozell](https://github.com/efeozell)
+- Linkedin: [@efeozell](https://www.linkedin.com/in/efeozell/)
 
 ---
-
-## 📄 License
-
-MIT License — see [LICENSE](LICENSE) for details.
